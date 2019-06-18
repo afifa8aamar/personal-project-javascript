@@ -14,8 +14,10 @@ export class PupilsModel {
             throw new TypeError('Provide string for last name')
         if (typeof pupil.image !== 'string')
             throw new TypeError('Provide string for image')
-        if (typeof pupil.dateOfBirth !== 'string')
-            throw new TypeError('Provide string for dateOfBirth')
+        var date = new Date(pupil.dateOfBirth);
+        date = date.getDate() + "-" + date.getMonth() + "-" + date.getFullYear();
+        if (typeof date !== 'string')
+            throw new TypeError('Provide string for dateOfBirth in format \'dd-mm-yyy\'');
         if (typeof pupil.phones !== 'object')
             throw new TypeError('Provide object for phones')
         for (let i = 0 ; i < pupil.phones.length ; i++)

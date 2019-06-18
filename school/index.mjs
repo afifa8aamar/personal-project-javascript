@@ -1,7 +1,7 @@
 
-export {SubjectsModel } from './SubjectsModel.mjs'
-export {LMSModel } from './LMSModel.mjs'
-export {TeachersModel } from './TeachersModel.mjs'
-export {PupilsModel } from './PupilsModel.mjs'
-export {GroupsModel } from './GroupsModel.mjs'
-export {GradebooksModel } from './GradebooksModel.mjs'
+export {SubjectsModel } from './SubjectsModel'
+export {LMSModel } from './LMSModel'
+export {TeachersModel } from './TeachersModel'
+export {PupilsModel } from './PupilsModel'
+export {GroupsModel } from './GroupsModel'
+export {GradebooksModel } from './GradebooksModel'

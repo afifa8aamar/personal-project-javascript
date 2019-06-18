@@ -1,21 +1,27 @@
+
 export class GroupsModel {
     constructor(){
         this.groups = new Map();
     }
-    add (group)
+    add (room, level =1)
     {
-        if (typeof group !== 'object')
-            throw new TypeError('Use object for group');
-        if (typeof group.room !== 'number')
-            throw new TypeError('Use number for group.room');    
-        if (typeof group.level !== 'number')
-            throw new TypeError('Use number for group.level');
         const id =  () => {return '_' + Math.random().toString(36).substr(2, 9) };
         var privateID = id();
+        
+        let group = {
+            privateID,
+            room ,
+            level ,
+        }
+        if (typeof room !== 'number')
+            throw new TypeError('Use number for group.room');    
+        if (typeof level !== 'number')
+            throw new TypeError('Use number for group.level');
+
         this.groups.set(privateID, group );
         return privateID;
     }
-    remove(id)
+    /*remove(id)
     {
         if (typeof this.groups.get(id) == 'undevined')
             throw new TypeError('Invalid Id');
@@ -31,8 +37,9 @@ export class GroupsModel {
         var obj = { id , ...group };
         return obj;
     }
-    update (id,group)
+    update (id,obj)
     {
+
         if (typeof id !== 'string')
             throw new TypeError('id is not a string');
         if (typeof this.groups.get(id) == 'undefined')
@@ -48,5 +55,5 @@ export class GroupsModel {
     readAll()
     {
         return [...this.groups]
-    }
+    }*/
 }

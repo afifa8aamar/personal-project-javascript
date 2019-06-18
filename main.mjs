@@ -5,15 +5,13 @@ import {
     PupilsModel,
     GroupsModel,
     GradebooksModel
-} from './school/index.mjs';
+} from './school';
 
-/*new SubjectsModel();
-new LMSModel();
-new PupilsModel();
-new GroupsModel();
-new GradebooksModel();
-*/
-
+// new SubjectsModel();
+// new LMSModel();
+// new PupilsModel();
+// new GroupsModel();
+// new GradebooksModel();
 
 
 var teacherObj = 
@@ -22,27 +20,27 @@ var teacherObj =
       "first": 'Pitter',
       "last": "Black"
     },
-    "image": "string",
-    "dateOfBirth": "string", // format date
+    "image": "image",
+    "dateOfBirth": "19-12-1965",
     "emails": [
       {
-        "email": "string",
+        "email": "Pitter.black@gmail.com",
         "primary": true
       }
     ],
     "phones": [
       {
-        "phone": "string",
+        "phone": "+65489563254",
         "primary": true
       }
     ],
-    "sex": "male", // male or female
+    "sex": "male", 
     "subjects": [
       {
         "subject": "Math"
       }
     ],
-    "description": "string",
+    "description": "A Good teacher",
   };
 
   var teacherObj1 = 
@@ -51,27 +49,34 @@ var teacherObj =
       "first": 'Oliver',
       "last": "White"
     },
-    "image": "string",
-    "dateOfBirth": "string", // format date
+    "image": "image",
+    "dateOfBirth": "20-8-1996", 
     "emails": [
       {
-        "email": "string",
+        "email": "Oliver.white@gmail.com",
         "primary": true
       }
     ],
     "phones": [
       {
-        "phone": "string",
+        "phone": "+6785163254",
         "primary": true
+      },
+      {
+        "phone": "+6785167854",
+        "primary": false
       }
     ],
-    "sex": "male", // male or female
+    "sex": "male", 
     "subjects": [
       {
-        "subject": "Math"
+        "subject": "Biology"
+      },
+      {
+        "subject": "Geology"
       }
     ],
-    "description": "string",
+    "description": "A good teacher",
   };
 
 
@@ -147,49 +152,29 @@ console.log('groups-------------------------------------------------------------
 const room = 236;
 const groups = new GroupsModel();
 
-
-const group = {
-  room,
-  level: 1
-}
 // Create a new group
-const groupid = groups.add(group);
-console.log (groupid);
+const groupId = groups.add(room);
+
 // Remove this pupil from this group
-
-
+groups.removePupil(groupId, pupilId);
 
 // Add this pupil to this group
-//groups.add(group);
+groups.addPupil(groupId, pupilId);
 
-// Update room and level for this group
-groups.update(groupid, {
-  room: 237,
-  level: 1
+// Update room for this group
+groups.update(groupId, {
+  room: 237
 });
 
 // Read information about group
-var groupinfo = groups.read(groupid);
-console.log(groupinfo);
+groups.read(groupId);
 // {
 //   id: 'JEF5H43H'
-//   room: 237,
-//   level: 1,
-//   gradebooks: [
-//   	{
-//   		level: 1,
-//       id: null
-//     }
-//   ],
+//   room: 237
 // }
 
 // It will return array of groups
-var allgroups = groups.readAll()
-console.log(allgroups);
-
-var removedgroups = groups.remove(groupid);
-console.log (removedgroups);
-
+groups.readAll()
 
 console.log('greades---------------------------------------------------------------------------------------------------')
 
@@ -232,3 +217,6 @@ const oliver = gradebooks.read(gradebookId, pupilId);
 
 // Read information about all students in this gradebook
 const students = gradebooks.readAll(gradebookId); // It will return the array of objects
+
+
+
