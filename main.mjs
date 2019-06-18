@@ -4,15 +4,11 @@ import {
     TeachersModel,
     PupilsModel,
     GroupsModel,
-    GradebooksModel
+    GradebooksModel,
 } from './school';
 
-// new SubjectsModel();
-// new LMSModel();
-// new PupilsModel();
-// new GroupsModel();
-// new GradebooksModel();
 
+(async() =>{
 
 var teacherObj = 
 {
@@ -67,32 +63,28 @@ var teacherObj =
         "primary": false
       }
     ],
-    "sex": "male", 
-    "subjects": [
-      {
-        "subject": "Biology"
-      },
-      {
-        "subject": "Geology"
-      }
-    ],
-    "description": "A good teacher",
+    "sex": "male"
   };
 
 
+
+
+
+
 const teacher = new TeachersModel();
-var teacherid = teacher.add(teacherObj);
-var result = teacher.read(teacherid);
+var teacherid = await teacher.add(teacherObj);
+console.log (teacherid);
+var result = await teacher.read(teacherid);
 console.log(result);
-var update = teacher.update(teacherid, teacherObj1);
-result = teacher.read(teacherid);
+var update = await teacher.update(teacherid, teacherObj1);
+result = await teacher.read(teacherid);
 console.log(update);
 console.log(result);
 var deletedteacher = teacher.remove(teacherid);
 console.log(deletedteacher);
 
 
-
+/*
 console.log('Pupil -----------------------------------------------------------------------------------------');
 
 
@@ -153,21 +145,26 @@ const room = 236;
 const groups = new GroupsModel();
 
 // Create a new group
-const groupId = groups.add(room);
-
+const groupid = groups.add(room);
+console.log(groupid)
+var groupInfo = groups.read(groupid);
+console.log(groupInfo)
 // Remove this pupil from this group
-groups.removePupil(groupId, pupilId);
+//groups.removePupil(groupid, pupilid);
 
 // Add this pupil to this group
-groups.addPupil(groupId, pupilId);
+groups.addPupil(groupid, pupilid);
+groups.addPupil(groupid, pupilid);
+var groupInfo = groups.read(groupid);
+console.log(groupInfo)
 
 // Update room for this group
-groups.update(groupId, {
+groups.update(groupid, {
   room: 237
 });
 
 // Read information about group
-groups.read(groupId);
+groups.read(groupid);
 // {
 //   id: 'JEF5H43H'
 //   room: 237
@@ -220,3 +217,7 @@ const students = gradebooks.readAll(gradebookId); // It will return the array of
 
 
 
+*/
+
+
+})();
