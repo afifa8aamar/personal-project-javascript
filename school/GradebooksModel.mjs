@@ -1,62 +1,81 @@
-import {validate} from './validate';
+export class GradebooksModel{
 
-export class GradebooksModel {
-    constructor(groups, teachers, lms){
+    constructor(groups, teachers, lms)
+    {
         this.gradebook = new Map();
-        this.data = {
-            groups, teachers , lms 
+        this.mainbook = [];
+        this.groups = groups;
+        this.teachers = teachers;
+        this.lms = lms;
+        this.id = "";
+    }
+
+    async add(level, groupId){
+        let obj = {};
+        const GenerateID =  () => {return '_' + Math.random().toString(36).substr(2, 9) };
+        this.id = GenerateID();
+        obj.id = this.id;
+        obj.level = level;
+        obj.groupid = groupId;
+        if(typeof groupId !== "string") 
+            throw new Error('invalid id');
+        this.gradebook.set(this.id, obj);
+        return this.id;
+    }
+
+    async clear()
+    {
+        this.groups = {};
+        this.teachers = {};
+        this.lms = {};
+    }
+
+    async addRecord(gradebookId, record){
+        
+        let name = "";
+        let tmp = this.groups.pupils
+        for(let i = 0; i < tmp.size; i++ ){
+            if( tmp.pupil.id == record.pupilId){
+                name = `${tmp[i].pupil.name.first} ${tmp[i].pupil.name.last}`;
+            }
+        }
+        let teacherId = record.teacherId;
+        let subjectId = record.subjectId;
+        let lesson = record.lesson;
+        let mark = record.mark ;
+        let teacher = `${this.teachers.teachers.get(teacherId).name.first} ${this.teachers.teachers.get(teacherId).name.last}`;
+        let subject =  this.lms.lms
+        subject = Array.from(subject)
+        subject = subject[0].title
+        let obj = {
+            name,
+            records: [ { teacher,subject,lesson,mark } ]
+        };
+        
+        let finalobj = {gradebookid: gradebookId, record:  obj, idpupil: record.pupilId};
+        this.mainbook.push(finalobj);
+    }
+
+    async read(first, second){
+        for(let i = 0; i < this.mainbook.length; i++)
+        {
+            if(this.mainbook[i].gradebookid == first && this.mainbook[i].idpupil == second)
+            {
+                return this.mainbook[i].record;
+            }
         }
     }
 
-    add (level = 1, id)
+    async readAll(mainid)
     {
-        return new Promise((resolve, reject) => {
-            if (typeof level !== 'number' || typeof id !== 'number')
-                reject('Can\'t add');
-            else 
-            {
-                const GenerateID =  () => {return '_' + Math.random().toString(36).substr(2, 9) };
-                let id = GenerateID();
-                this.gradebook(id , {level, id , records: []})
-                resolve(id);
-            }
-    });
-
-        
-    }
-    clear()
-    {
-        return new Promise((resolve, reject) => {
-                this.grades.clear();
-                resolve("Clear!");
-        });
-    }
-
-    addRecord(gradebookId, record)
-    {
-        return new Promise((resolve, reject) => {
-            if (this.groups.get(gradebookId) == 'undefined')
-                reject('Can\'t add');
-            else 
-            {
-                this.gradebook.get(gradebookId).records.push(record);
-                resolve("addRecord resolved");
-            }
-    });
-
-    }
-
-    read(gradebookId, pupilId)
-    {
-        return new Promise ((resolve, reject) =>
+        let result = [];
+        for(let i=0; i<this.mainbook.length; i++)
         {
-            this.gradebook.get(gradebookId)
-        });
+            if(this.mainbook[i].gradebookid == mainid)
+            {
+                result.push(this.mainbook[i].record);
+            }
+        }
+        return result;
     }
-
-    readAll(gradebookId)
-    {
-        return [...this.grades];
-    }
-
 }

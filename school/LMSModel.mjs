@@ -4,35 +4,27 @@ export class LMSModel {
         this.lms = new Set();
     }
 
-    add(subject)
+    async add(subject)
     {
-        return new Promise((resolve, reject) => {
-                this.lms.add(subject.subject);
-                resolve('Resolved');
-        });
+        this.lms.add(subject.subject);
+        return 'Resolved';
 
     }
-    verify (subject)
+    async verify (subject)
     {
-        return new Promise((resolve, reject) => {
-            resolve(this.lms.has(subject.subject));
-        });
+        return this.lms.has(subject.subject);
     }
-    remove (subject)
+    async remove (subject)
     {
-        return new Promise((resolve, reject) => {
         if (this.lms.has(subject.subject))
             {
                 let l = this.lms.delete(subject.subject);
-                resolve('Removed');
+                return 'Removed'
             }
-            else reject('Can\'t Remove');
-        });
+        else throw new TypeError('Can\'t Remove');
     }
-    readAll()
+    async readAll()
     {
-        return new Promise((resolve, reject) => {
-                resolve([...this.lms]);
-        });
+        return [...this.lms]
     }
 }

@@ -8,11 +8,10 @@ export class GroupsModel {
             "room": "number"
         }
     }
-    add (room, level =1)
+    async add (room, level =1)
     {
-        return new Promise((resolve, reject) => {
-            if (typeof room !== 'number' || typeof level !== 'number' )
-            reject('Can\'t add')   
+        if (typeof room !== 'number' || typeof level !== 'number' )
+            throw new TypeError('Can\'t add')   
         else
         {
             const id =  () => {return '_' + Math.random().toString(36).substr(2, 9) };
@@ -26,80 +25,66 @@ export class GroupsModel {
                 pupils
             }
             this.groups.set(privateID, group );
-            resolve(privateID);
+            return privateID;
         }
-        });
     }
 
-    addPupil(groupID , pupilID)
+    async addPupil(groupID , pupilID)
     {
-        return new Promise((resolve, reject) => {
-            this.pupils.set(groupID,pupilID);
-            var pupils = [...this.pupils];
-            var room = this.groups.get(groupID).room;
-            var level = this.groups.get(groupID).level;
-            let group = {
-                groupID,
-                room ,
-                level ,
-                pupils
-            };
-            let oldData = this.groups.get(groupID);
-            this.groups.set(groupID,{...oldData, ...group});
-
-            resolve(`Added ${pupilID} to ${groupID}`);
-        });
+        this.pupils.set(groupID,pupilID);
+        var pupils = [...this.pupils];
+        var room = this.groups.get(groupID).room;
+        var level = this.groups.get(groupID).level;
+        let group = {
+            groupID,
+            room ,
+            level ,
+            pupils
+        };
+        let oldData = this.groups.get(groupID);
+        this.groups.set(groupID,{...oldData, ...group});
+        return (`Added ${pupilID} to ${groupID}`)
     }
-    removePupil(groupID , pupilID)
+    async removePupil(groupID , pupilID)
     {
-        return new Promise((resolve, reject) => {
-            if (typeof this.groups.get(groupID) == 'undefined' )
-                reject(`Invalid group id ${groupID}`)
-            else 
-                resolve(this.groups.delete(id));
-        });
+        if (typeof this.groups.get(groupID) == 'undefined' )
+            return `Invalid group id ${groupID}`
+        else throw new TypeError(this.groups.delete(id));
     }
-    read (groupID)
+    async read (groupID)
     {
-
-        return new Promise((resolve, reject) => {
-            if (typeof this.groups.get(groupID) !== 'undefined')
-            {
-                var room =  this.groups.get(groupID).room;
-                var group = {
-                    groupID, room
-                }
-                resolve(group);
-
+        if (typeof this.groups.get(groupID) !== 'undefined')
+        {
+            var room =  this.groups.get(groupID).room;
+            var group = {
+                groupID, room
             }
-            else reject('Invalid ID');
+            return(group);
 
-        });
-    }
-
-    update (currentID,obj)
-    {
-        return new Promise((resolve, reject) => {
-            if ( this.groups.get(currentID) == void 0)
-            {
-              reject('Can\'t Update');
-            }
-            else
-            {
-                let current = this.groups.get(currentID);
-                this.groups.set(currentID,{...current, ...obj});
-                resolve (currentID)
-            }
-          });
         }
+        else throw new TypeError('Invalid ID');
+    }
+
+    async update (currentID,obj)
+    {
+        if ( this.groups.get(currentID) == void 0)
+        {
+            throw new TypeError('Can\'t Update');
+        }
+        else
+        {
+            let current = this.groups.get(currentID);
+            this.groups.set(currentID,{...current, ...obj});
+            return (currentID)
+        }
+    }
 
     
     readAll()
     {
-        return new Promise((resolve, reject) => {   
-                var groups = [...this.groups]
-                resolve(groups);
-        });
+ 
+        var groups = [...this.groups]
+        return (groups);
     }
 
 }

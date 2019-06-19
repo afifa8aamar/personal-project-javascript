@@ -8,7 +8,7 @@ export class TeachersModel {
               "last": "string"
             },
             "image": "string",
-            "dateOfBirth": "string", // format date
+            "dateOfBirth": "string",
             "emails": [
               {
                 "email": "string",
@@ -31,54 +31,39 @@ export class TeachersModel {
           }
     }
 
-    add (teacher)
+    async add (teacher)
     {
-        return new Promise((resolve, reject) => {
-            if (validate (this.schema , teacher))
-            {
-                const id =  () => {return '_' + Math.random().toString(36).substr(2, 9) };
-                var privateID = id();
-                this.teachers.set(privateID, teacher);
-                resolve(privateID);
-            }
-            else reject('Can\'t add');
-        });
-        
+      if (validate (this.schema , teacher))
+      {
+          var privateID = '_' + Math.random().toString(36).substr(2, 9);
+          this.teachers.set(privateID, teacher);
+          return privateID;
+      }
+      else throw new TypeError('Invalid object')
     }
-    read (id)
+    async read (id)
     {
-        return new Promise ((resolve, reject) => 
-        {
-            if (typeof id !== 'string' || this.teachers.get(id) == 'undefined')
-                reject('Some error')
-            else {
-                var teacher = this.teachers.get(id);
-                var obj = { id , ...teacher }
-                resolve(obj);
-            }
-        });
+      if (typeof id !== 'string' || this.teachers.get(id) == 'undefined')
+          throw new TypeError("Invalid ID")
+      else {
+          var teacher = this.teachers.get(id);
+          var obj = { id , ...teacher }
+          return obj ; 
+      }
     }
-    remove(id)
+    async remove(id)
     {
-      return new Promise((resolve, reject) => {
         if ( this.teachers.get(id) == void 0)
-        {
-          reject('Can\'t Update');
-        }
+          throw new TypeError('Can\'t Update');
         else
-        {
-          resolve (this.teachers.delete(id) )
-        }
-      });
+          return this.teachers.delete(id) ;
+
     }
 
-    update (currentID , obj )
+    async update (currentID , obj )
     {
-      return new Promise((resolve, reject) => {
         if ( this.teachers.get(currentID) == void 0)
-        {
-          reject('Can\'t Update');
-        }
+          throw new TypeError('Can\'t Update');
         else
         {
           let current = this.teachers.get(currentID);
@@ -100,9 +85,8 @@ export class TeachersModel {
               this.teachers.set(currentID,{...current, ...obj});
             }
           }
-          resolve (currentID)
+          return currentID;
         }
-      });
     }
 
 

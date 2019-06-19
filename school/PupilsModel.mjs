@@ -19,87 +19,68 @@ export class PupilsModel {
             "description": "string"
           }
     }
-    add (pupil)
+    async add (pupil)
     {
-        return new Promise((resolve, reject) => {
-            if (validate (this.schema , pupil))
-            {
-                const id =  () => {return '_' + Math.random().toString(36).substr(2, 9) };
-                var privateID = id();
-                this.pupils.set(privateID, pupil);
-                resolve(privateID);
-            }
-            else reject('Can\'t add');
-        });
+      if (validate (this.schema , pupil))
+      {
+        const id =  () => {return '_' + Math.random().toString(36).substr(2, 9) };
+        var privateID = id();
+        this.pupils.set(privateID, pupil);
+        return privateID;
+      }
+      else throw new TypeError('Can\'t add');
 
     }
-    read (id)
+    async read (id)
     {
-        if (typeof id !== 'string')
-        {
-            throw new TypeError('id is not a string');
-        }
-        if (this.pupils.get(id) == 'undefined')
-            return null;
-        return new Promise ((resolve, reject) => 
-        {
-            if (typeof id !== 'string' || this.pupils.get(id) == 'undefined')
-                reject('Can\'t read')
-            else {
-                var pupils = this.pupils.get(id);
-                var obj = { id , ...pupils }
-                resolve(obj);
-            }
-        });
+      if (typeof id !== 'string' || this.pupils.get(id) == 'undefined')
+          throw new TypeError('Can\'t read')
+      else {
+          var pupils = this.pupils.get(id);
+          var obj = { id , ...pupils }
+          return (obj);
+      }
     }
 
-    update (currentID , obj )
+    async update (currentID , obj )
     {
-      return new Promise((resolve, reject) => {
-        if ( this.pupils.get(currentID) == void 0)
+      if ( this.pupils.get(currentID) == void 0)
+        throw new TypeError('Can\'t Update');
+      else
+      {
+        let current = this.pupils.get(currentID);
+        for ( var i  = 0 ; i < Object.keys(obj).length; i++)
         {
-          reject('Can\'t Update');
-        }
-        else
-        {
-          let current = this.pupils.get(currentID);
-          for ( var i  = 0 ; i < Object.keys(obj).length; i++)
+          if(Array.isArray(obj[Object.keys(obj)[i]]))
           {
-            if(Array.isArray(obj[Object.keys(obj)[i]]))
-            {
-              for (let i = 0 ; i < obj[Object.keys(obj)[i]].length ; i++)
-              {
-                this.update(currentID , obj[Object.keys(obj)[i]])
-              }
-            }
-            if (typeof obj[Object.keys(obj)[i]] == 'object')
+            for (let i = 0 ; i < obj[Object.keys(obj)[i]].length ; i++)
             {
               this.update(currentID , obj[Object.keys(obj)[i]])
             }
-            if (Object.keys(obj)[i] == Object.keys(current)[i])
-            {
-              this.pupils.set(currentID,{...current, ...obj});
-            }
           }
-          resolve (currentID)
+          if (typeof obj[Object.keys(obj)[i]] == 'object')
+          {
+            this.update(currentID , obj[Object.keys(obj)[i]])
+          }
+          if (Object.keys(obj)[i] == Object.keys(current)[i])
+          {
+            this.pupils.set(currentID,{...current, ...obj});
+          }
         }
-      });
+        return currentID
+      }
     }
 
 
 
-    remove(id)
+    async remove(id)
     {
-        return new Promise((resolve, reject) => {
-            if ( this.pupils.get(id) == void 0)
-            {
-              reject('Invalid Id');
-            }
-            else
-            {
-                this.pupils.delete(id) ;
-              resolve (this.pupils.delete(id) )
-            }
-          });
+      if ( this.pupils.get(id) == void 0)
+        throw new TypeError('Invalid Id');
+      else
+      {
+          this.pupils.delete(id) ;
+        return (this.pupils.delete(id) )
+      }
     }
 }
