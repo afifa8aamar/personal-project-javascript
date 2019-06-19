@@ -42,14 +42,14 @@ var teacherObj =
   var teacherObj1 = 
 {
     "name": {
-      "first": 'Oliver',
+      "first": 'Lisa',
       "last": "White"
     },
     "image": "image",
     "dateOfBirth": "20-8-1996", 
     "emails": [
       {
-        "email": "Oliver.white@gmail.com",
+        "email": "Lisa.white@gmail.com",
         "primary": true
       }
     ],
@@ -63,14 +63,33 @@ var teacherObj =
         "primary": false
       }
     ],
-    "sex": "male"
+    "sex": "female"
   };
 
+var obj = {
+  "name": {
+    "first": 'Changed',
+    "last": "To this"
+  },
+  "phones": [
+    {
+      "phone": "+6785163254",
+      "primary": true
+    },
+    {
+      "phone": "+6785167854",
+      "primary": false
+    }
+  ],
+}
 
 
-
-
-
+const teacher = new TeachersModel();
+var teacherid = await teacher.add(teacherObj);
+//console.log (teacher.merge(teacherid,teacherObj1))
+teacher.merge(teacherid,obj);
+console.log( await teacher.read(teacherid))
+/*
 const teacher = new TeachersModel();
 var teacherid = await teacher.add(teacherObj);
 console.log (teacherid);
@@ -80,11 +99,11 @@ var update = await teacher.update(teacherid, teacherObj1);
 result = await teacher.read(teacherid);
 console.log(update);
 console.log(result);
-var deletedteacher = teacher.remove(teacherid);
+var deletedteacher = await teacher.remove(teacherid);
 console.log(deletedteacher);
 
 
-/*
+
 console.log('Pupil -----------------------------------------------------------------------------------------');
 
 
@@ -94,47 +113,74 @@ var pupil1 = {
       "last": "Black"
     },
     "image": "string",
-    "dateOfBirth": "string", // format date
+    "dateOfBirth": "string",
     "phones": [
       {
         "phone": "string",
         "primary": true
       }
     ],
-    "sex": 'male', // male OR female
+    "sex": 'male', 
+    "description": "A Good pupil",
+  }
+
+  var pupil2 = {
+    "name": {
+      "first": "Olver",
+      "last": "White"
+    },
+    "image": "string",
+    "dateOfBirth": "string",
+    "phones": [
+      {
+        "phone": "string",
+        "primary": true
+      }
+    ],
+    "sex": 'male', 
+    "description": "A Good pupil",
   }
 
 const pupils = new PupilsModel();
-var pupilid = pupils.add(pupil1);
+var pupilid = await pupils.add(pupil1);
 console.log(pupilid);
-var result = pupils.read(pupilid);
+var result = await pupils.read(pupilid);
 console.log(result);
-var update = pupils.update(pupilid, teacherObj1);
-result = pupils.read(pupilid);
+var update =await pupils.update(pupilid, pupil2);
+result =await pupils.read(pupilid);
 console.log(update);
 console.log(result);
-var deletedpupils = pupils.remove(pupilid);
+var deletedpupils =await pupils.remove(pupilid);
 console.log(deletedpupils);
 
 
-console.log('subject ------------------------------------------------------------------');
+
+console.log(' LMS + subject ------------------------------------------------------------------');
+
 const history = new SubjectsModel({
-    title: 'History',
-    lessons: 24
-  });
-  
-  // will return subjectId
-console.log(history.id);
+  title: 'History',
+  lessons: 24,
+  description: 'Some text'
+});
+
+// will return subjectId
+var historyid = history.id
+console.log(historyid);
 
 const lms = new LMSModel();
-console.log(history.subject.lessons)
-lms.add(history);
 //lms.remove(history);
 
-var verify = lms.verify(history);
-console.log (verify);
-var allLMS = lms.readAll();
-console.log (allLMS);
+console.log(await lms.add(history));
+
+console.log(await lms.verify(history));
+
+// will return array of registered subjects
+console.log(await lms.readAll());
+// [
+//   {
+//     subjectId: null
+//   }
+// ]
 
 
 
@@ -145,33 +191,34 @@ const room = 236;
 const groups = new GroupsModel();
 
 // Create a new group
-const groupid = groups.add(room);
+const groupid = await groups.add(room);
 console.log(groupid)
-var groupInfo = groups.read(groupid);
+var groupInfo = await groups.read(groupid);
 console.log(groupInfo)
 // Remove this pupil from this group
 //groups.removePupil(groupid, pupilid);
 
 // Add this pupil to this group
-groups.addPupil(groupid, pupilid);
-groups.addPupil(groupid, pupilid);
-var groupInfo = groups.read(groupid);
+await groups.addPupil(groupid, pupilid);
+await groups.addPupil(groupid, pupilid);
+var groupInfo = await groups.read(groupid);
 console.log(groupInfo)
 
 // Update room for this group
-groups.update(groupid, {
+await groups.update(groupid, {
   room: 237
 });
 
 // Read information about group
-groups.read(groupid);
+await groups.read(groupid);
 // {
 //   id: 'JEF5H43H'
 //   room: 237
 // }
 
 // It will return array of groups
-groups.readAll()
+await groups.readAll()
+
 
 console.log('greades---------------------------------------------------------------------------------------------------')
 

@@ -7,13 +7,15 @@ export function validate(schema,data, flag = false)
       if(Array.isArray(data[Object.keys(data)[i]]))
       {
         for (let i = 0 ; i < data[Object.keys(data)[i]].length ; i++)
-            validate (schema[Object.keys(schema)[0]] , data[Object.keys(data)[i]])
+        {
+          validate (schema[Object.keys(schema)[0]] , data[Object.keys(data)[i]])
+        }
       }
       if (typeof data[Object.keys(data)[i]] == 'object')
       {
         validate(schema[Object.keys(schema)[i]] , data[Object.keys(data)[i]])
       }
-      if(data.hasOwnProperty(Object.keys(schema)[i]) == 'false' )  
+      if(data.hasOwnProperty(Object.keys(schema)[i]) == 'false' )
       {
         throw new TypeError('Key is not provided')
       }
@@ -46,7 +48,6 @@ export function validate(schema,data, flag = false)
       }
     }
   }
-
     return true
 }
 

@@ -70,16 +70,42 @@ export class TeachersModel {
             }
             else reject('Can\'t Update');
         });
-        
-        ;
-        return true;
-        
     }
     remove(id)
     {
+      return new Promise((resolve, reject) => {
         if ( this.teachers.get(id) == void 0)
-            throw new ReferenceError('Invalid Id');
-        return this.teachers.delete(id) ;
+        {
+          reject('Can\'t Update');
+        }
+        else
+        {
+          resolve (this.teachers.delete(id) )
+        }
+      });
+    }
+
+    merge (currentID , obj )
+    {
+      let current = this.teachers.get(currentID);
+      for ( var i  = 0 ; i < Object.keys(obj).length; i++)
+      {
+        if(Array.isArray(obj[Object.keys(obj)[i]]))
+        {
+          for (let i = 0 ; i < obj[Object.keys(obj)[i]].length ; i++)
+          {
+            this.merge(currentID , obj[Object.keys(obj)[i]])
+          }
+        }
+        if (typeof obj[Object.keys(obj)[i]] == 'object')
+        {
+          this.merge(currentID , obj[Object.keys(obj)[i]])
+        }
+        if (Object.keys(obj)[i] == Object.keys(current)[i])
+        {
+          this.teachers.set(currentID,{...current, ...obj});
+        }
+      }
     }
 
 

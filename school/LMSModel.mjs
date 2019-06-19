@@ -1,29 +1,47 @@
+import {validate} from './validate';
 export class LMSModel {
     constructor(){
         this.lms = new Set();
+        this.schema = {
+            "title": "string",
+            "lessons": "number",
+            "description": "string"
+          }
     }
 
     add(subject)
     {
-        if (typeof subject.subject.title !== 'string')
-            throw new TypeError('title should be string');
-        if (typeof subject.subject.lessons !== 'number')
-            throw new TypeError('lessons should be number');
-        if (typeof subject.subject.description !== 'undefined' && typeof subject.subject.description !== 'string')
-            throw new TypeError('description should be string');
-        this.lms.add(subject.subject);
+        return new Promise((resolve, reject) => {
+            if (validate (this.schema , subject.subject))
+            {
+                this.lms.add(subject.subject);
+                resolve('Resolved');
+            }
+            else reject('Can\'t add');
+        });
+
     }
     verify (subject)
     {
-        return this.lms.has(subject.subject);
+        return new Promise((resolve, reject) => {
+            resolve(this.lms.has(subject.subject));
+        });
     }
     remove (subject)
     {
+        return new Promise((resolve, reject) => {
         if (this.lms.has(subject.subject))
-            return this.lms.delete(subject.subject);
+            {
+                let l = this.lms.delete(subject.subject);
+                resolve('Removed');
+            }
+            else reject('Can\'t Remove');
+        });
     }
     readAll()
     {
-        return [...this.lms];
+        return new Promise((resolve, reject) => {
+                resolve([...this.lms]);
+        });
     }
 }
