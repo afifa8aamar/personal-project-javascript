@@ -58,19 +58,6 @@ export class TeachersModel {
             }
         });
     }
-    update(id, teacher)
-    {
-        if ( this.teachers.get(id) == 'undefined')
-            throw new TypeError('This id does not exist!')
-        return new Promise((resolve, reject) => {
-            if (validate (this.schema , teacher, true))
-            {
-                this.teachers.set(id, teacher);
-                resolve('Resolved');
-            }
-            else reject('Can\'t Update');
-        });
-    }
     remove(id)
     {
       return new Promise((resolve, reject) => {
@@ -85,27 +72,37 @@ export class TeachersModel {
       });
     }
 
-    merge (currentID , obj )
+    update (currentID , obj )
     {
-      let current = this.teachers.get(currentID);
-      for ( var i  = 0 ; i < Object.keys(obj).length; i++)
-      {
-        if(Array.isArray(obj[Object.keys(obj)[i]]))
+      return new Promise((resolve, reject) => {
+        if ( this.teachers.get(currentID) == void 0)
         {
-          for (let i = 0 ; i < obj[Object.keys(obj)[i]].length ; i++)
+          reject('Can\'t Update');
+        }
+        else
+        {
+          let current = this.teachers.get(currentID);
+          for ( var i  = 0 ; i < Object.keys(obj).length; i++)
           {
-            this.merge(currentID , obj[Object.keys(obj)[i]])
+            if(Array.isArray(obj[Object.keys(obj)[i]]))
+            {
+              for (let i = 0 ; i < obj[Object.keys(obj)[i]].length ; i++)
+              {
+                this.update(currentID , obj[Object.keys(obj)[i]])
+              }
+            }
+            if (typeof obj[Object.keys(obj)[i]] == 'object')
+            {
+              this.update(currentID , obj[Object.keys(obj)[i]])
+            }
+            if (Object.keys(obj)[i] == Object.keys(current)[i])
+            {
+              this.teachers.set(currentID,{...current, ...obj});
+            }
           }
+          resolve ('Updated')
         }
-        if (typeof obj[Object.keys(obj)[i]] == 'object')
-        {
-          this.merge(currentID , obj[Object.keys(obj)[i]])
-        }
-        if (Object.keys(obj)[i] == Object.keys(current)[i])
-        {
-          this.teachers.set(currentID,{...current, ...obj});
-        }
-      }
+      });
     }
 
 

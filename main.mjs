@@ -86,11 +86,10 @@ var obj = {
 
 const teacher = new TeachersModel();
 var teacherid = await teacher.add(teacherObj);
-//console.log (teacher.merge(teacherid,teacherObj1))
-teacher.merge(teacherid,obj);
+console.log (await teacher.update(teacherid,obj))
+
 console.log( await teacher.read(teacherid))
-/*
-const teacher = new TeachersModel();
+
 var teacherid = await teacher.add(teacherObj);
 console.log (teacherid);
 var result = await teacher.read(teacherid);
@@ -126,8 +125,8 @@ var pupil1 = {
 
   var pupil2 = {
     "name": {
-      "first": "Olver",
-      "last": "White"
+      "first": "Changed",
+      "last": "To this"
     },
     "image": "string",
     "dateOfBirth": "string",
@@ -154,7 +153,7 @@ var deletedpupils =await pupils.remove(pupilid);
 console.log(deletedpupils);
 
 
-
+/*
 console.log(' LMS + subject ------------------------------------------------------------------');
 
 const history = new SubjectsModel({

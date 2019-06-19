@@ -53,19 +53,54 @@ export class PupilsModel {
         });
     }
 
-    update(id, pupil)
+    // update(id, pupil)
+    // {
+    //     if (this.pupils.get(id) == 'undefined')
+    //         throw new TypeError('This id is not valid')
+    //     return new Promise((resolve, reject) => {
+    //         if (validate (this.schema , pupil, true))
+    //         {
+    //             this.pupils.set(id, pupil);
+    //             resolve('Resolved');
+    //         }
+    //         else reject('Can\'t Update');
+    //     });
+    // }
+
+
+    update (currentID , obj )
     {
-        if (this.pupils.get(id) == 'undefined')
-            throw new TypeError('This id is not valid')
-        return new Promise((resolve, reject) => {
-            if (validate (this.schema , pupil, true))
+      return new Promise((resolve, reject) => {
+        if ( this.pupils.get(currentID) == void 0)
+        {
+          reject('Can\'t Update');
+        }
+        else
+        {
+          let current = this.pupils.get(currentID);
+          for ( var i  = 0 ; i < Object.keys(obj).length; i++)
+          {
+            if(Array.isArray(obj[Object.keys(obj)[i]]))
             {
-                this.pupils.set(id, pupil);
-                resolve('Resolved');
+              for (let i = 0 ; i < obj[Object.keys(obj)[i]].length ; i++)
+              {
+                this.update(currentID , obj[Object.keys(obj)[i]])
+              }
             }
-            else reject('Can\'t Update');
-        });
+            if (typeof obj[Object.keys(obj)[i]] == 'object')
+            {
+              this.update(currentID , obj[Object.keys(obj)[i]])
+            }
+            if (Object.keys(obj)[i] == Object.keys(current)[i])
+            {
+              this.pupils.set(currentID,{...current, ...obj});
+            }
+          }
+          resolve ('Updated')
+        }
+      });
     }
+
 
 
     remove(id)
