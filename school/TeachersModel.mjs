@@ -100,7 +100,7 @@ export class TeachersModel {
               this.teachers.set(currentID,{...current, ...obj});
             }
           }
-          resolve ('Updated')
+          resolve (currentID)
         }
       });
     }

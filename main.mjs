@@ -153,7 +153,7 @@ var deletedpupils =await pupils.remove(pupilid);
 console.log(deletedpupils);
 
 
-/*
+
 console.log(' LMS + subject ------------------------------------------------------------------');
 
 const history = new SubjectsModel({
@@ -204,19 +204,17 @@ var groupInfo = await groups.read(groupid);
 console.log(groupInfo)
 
 // Update room for this group
-await groups.update(groupid, {
-  room: 237
-});
+console.log(await groups.update(groupid, {room: 237}))
 
 // Read information about group
-await groups.read(groupid);
+console.log(await groups.read(groupid))
 // {
 //   id: 'JEF5H43H'
 //   room: 237
 // }
 
 // It will return array of groups
-await groups.readAll()
+console.log(await groups.readAll())
 
 
 console.log('greades---------------------------------------------------------------------------------------------------')
@@ -229,8 +227,9 @@ const teacherId = teacherid;
 const gradebooks = new GradebooksModel();
 
 // Create a new gradebook
-const gradebook = gradebooks.add(group.id);
-
+const gradebook = await gradebooks.add(group.id);
+console.log (gradebook)
+/*
 // Destroy all data inside this gradebook
 gradebooks.clear();
 

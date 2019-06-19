@@ -53,21 +53,6 @@ export class PupilsModel {
         });
     }
 
-    // update(id, pupil)
-    // {
-    //     if (this.pupils.get(id) == 'undefined')
-    //         throw new TypeError('This id is not valid')
-    //     return new Promise((resolve, reject) => {
-    //         if (validate (this.schema , pupil, true))
-    //         {
-    //             this.pupils.set(id, pupil);
-    //             resolve('Resolved');
-    //         }
-    //         else reject('Can\'t Update');
-    //     });
-    // }
-
-
     update (currentID , obj )
     {
       return new Promise((resolve, reject) => {
@@ -96,7 +81,7 @@ export class PupilsModel {
               this.pupils.set(currentID,{...current, ...obj});
             }
           }
-          resolve ('Updated')
+          resolve (currentID)
         }
       });
     }

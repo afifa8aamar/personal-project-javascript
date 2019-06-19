@@ -77,26 +77,29 @@ export class GroupsModel {
         });
     }
 
-    update (id,obj)
+    update (currentID,obj)
     {
-        if ( this.groups.get(id) == 'undefined')
-            throw new TypeError('This id does not exist!')
         return new Promise((resolve, reject) => {
-
-            if (validate (this.schema , obj, true))
+            if ( this.groups.get(currentID) == void 0)
             {
-                this.groups.set(id, obj);
-                resolve('Resolved');
+              reject('Can\'t Update');
             }
-            else reject('Can\'t Update');
-        });
+            else
+            {
+                let current = this.groups.get(currentID);
+                this.groups.set(currentID,{...current, ...obj});
+                resolve (currentID)
+            }
+          });
+        }
 
-
-        this.groups.set(id, group );
-    }
+    
     readAll()
     {
-        return [...this.groups]
+        return new Promise((resolve, reject) => {   
+                var groups = [...this.groups]
+                resolve(groups);
+        });
     }
 
 }
