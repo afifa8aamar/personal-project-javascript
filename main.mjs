@@ -221,15 +221,15 @@ console.log('greades------------------------------------------------------------
 
 
 
-
-const pupilId =  pupilid;
-const teacherId = teacherid;
-const gradebooks = new GradebooksModel();
-
-// Create a new gradebook
-const gradebook = await gradebooks.add(group.id);
-console.log (gradebook)
+const pupilId = pupil1.id;
+const teacherId = teacherId;
+const gradebooks = new GradebooksModel(groups, teachers, lms);
+console.log(gradebooks)
 /*
+// Create a new gradebook
+const level = 1;
+const gradebook = gradebooks.add(level, group.id);
+
 // Destroy all data inside this gradebook
 gradebooks.clear();
 
@@ -241,28 +241,25 @@ const record = {
   mark: 9
 };
 
-gradebooks.add(gradebookId, record);
+gradebooks.addRecord(gradebookId, record);
 
 // Read information about oliver results
 const oliver = gradebooks.read(gradebookId, pupilId);
-// {
-//   name: 'Oliver Black',
-//   records: [
-//     {
-//       teacher: 'Elizabeth Holms',
-//       subject: 'History',
-//       lesson: 1,
-//       mark: 9
-//     }
-//   ]
-// }
+{
+  name: 'Oliver Black',
+  records: [
+    {
+      teacher: 'Elizabeth Holms',
+      subject: 'History',
+      lesson: 1,
+      mark: 9
+    }
+  ]
+}
 
 // Read information about all students in this gradebook
 const students = gradebooks.readAll(gradebookId); // It will return the array of objects
 
-
-
 */
-
 
 })();
