@@ -87,9 +87,7 @@ var obj = {
 const teacher = new TeachersModel();
 var teacherid = await teacher.add(teacherObj);
 console.log (await teacher.update(teacherid,obj))
-
 console.log( await teacher.read(teacherid))
-
 var teacherid = await teacher.add(teacherObj);
 console.log (teacherid);
 var result = await teacher.read(teacherid);
@@ -162,76 +160,52 @@ const history = new SubjectsModel({
   description: 'Some text'
 });
 
-// will return subjectId
 var historyid = history.id
 console.log(historyid);
 
 const lms = new LMSModel();
 //lms.remove(history);
-
 console.log(await lms.add(history));
-
 console.log(await lms.verify(history));
-
-// will return array of registered subjects
 console.log(await lms.readAll());
-// [
-//   {
-//     subjectId: null
-//   }
-// ]
 
 
 
 
-console.log('groups--------------------------------------------------------------------------------------------')
+console.log('groups------------------------------------------------------------------------------------')
 
 const room = 236;
 const groups = new GroupsModel();
-
-// Create a new group
 const groupid = await groups.add(room);
 console.log(groupid)
 var groupInfo = await groups.read(groupid);
 console.log(groupInfo)
-// Remove this pupil from this group
-//groups.removePupil(groupid, pupilid);
-
-// Add this pupil to this group
 await groups.addPupil(groupid, pupilid);
 await groups.addPupil(groupid, pupilid);
 var groupInfo = await groups.read(groupid);
 console.log(groupInfo)
-
-// Update room for this group
 console.log(await groups.update(groupid, {room: 237}))
-
-// Read information about group
 console.log(await groups.read(groupid))
-// {
-//   id: 'JEF5H43H'
-//   room: 237
-// }
-
-// It will return array of groups
 console.log(await groups.readAll())
 
 
-console.log('greades---------------------------------------------------------------------------------------------------')
+console.log('grades------------------------------------------------------------------------------------')
 
 
 
 const pupilId = pupil1.id;
-const teacherId = teacherId;
-const gradebooks = new GradebooksModel(groups, teachers, lms);
-console.log(gradebooks)
-/*
+const teacherId = teacherid;
+const gradebooks = new GradebooksModel(groups, teacher, lms);
+//console.log(gradebooks)
+
 // Create a new gradebook
 const level = 1;
-const gradebook = gradebooks.add(level, group.id);
+const gradebook = await gradebooks.add(level, groupid);
+console.log(gradebook)
 
 // Destroy all data inside this gradebook
-gradebooks.clear();
+await gradebooks.clear();
+console.log(gradebooks)
 
 const record = {
   pupilId: pupilId,
@@ -241,25 +215,25 @@ const record = {
   mark: 9
 };
 
-gradebooks.addRecord(gradebookId, record);
+await gradebooks.addRecord(gradebookId, record);
 
 // Read information about oliver results
-const oliver = gradebooks.read(gradebookId, pupilId);
-{
-  name: 'Oliver Black',
-  records: [
-    {
-      teacher: 'Elizabeth Holms',
-      subject: 'History',
-      lesson: 1,
-      mark: 9
-    }
-  ]
-}
+const oliver = await gradebooks.read(gradebookId, pupilId);
+console.log(oliver);
+// {
+//   name: 'Oliver Black',
+//   records: [
+//     {
+//       teacher: 'Elizabeth Holms',
+//       subject: 'History',
+//       lesson: 1,
+//       mark: 9
+//     }
+//   ]
+// }
 
 // Read information about all students in this gradebook
 const students = gradebooks.readAll(gradebookId); // It will return the array of objects
 
-*/
 
 })();
